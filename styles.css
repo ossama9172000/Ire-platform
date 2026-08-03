@@ -1,10 +1,10 @@
 
 :root{--navy:#163A5F;--blue:#1F4E78;--light:#eef4f8;--green:#dff6e8;--red:#fde7e7;--yellow:#fff3cd;--text:#17202a}
-*{box-sizing:border-box} body{margin:0;background:var(--light);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:var(--text)}
+*{box-sizing:border-box}body{margin:0;background:var(--light);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;color:var(--text)}
 header{background:var(--navy);color:white;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
-h1{margin:0;font-size:26px} header small{opacity:.8} button,select,input{font:inherit}
+h1{margin:0;font-size:26px}header small{opacity:.8}button,select,input{font:inherit}
 nav{display:grid;grid-template-columns:repeat(4,1fr);background:white;position:sticky;top:65px;z-index:4;box-shadow:0 2px 8px #0001}
-nav button{border:0;padding:13px 5px;background:white} nav button.active{color:var(--blue);font-weight:700;border-bottom:3px solid var(--blue)}
+nav button{border:0;padding:13px 5px;background:white}nav button.active{color:var(--blue);font-weight:700;border-bottom:3px solid var(--blue)}
 main{max-width:900px;margin:auto;padding:14px}.page{display:none}.page.active{display:block}
 .card{background:white;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px #0000000d}
 .controls{display:grid;grid-template-columns:1fr 1fr;gap:12px}.controls label,.form label{display:flex;flex-direction:column;gap:6px}
