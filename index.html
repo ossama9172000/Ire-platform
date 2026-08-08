@@ -4,94 +4,145 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
   <meta name="theme-color" content="#163A5F"/>
-  <title>LRE Mobile MVP</title>
+  <title>LRE Mobile</title>
   <link rel="manifest" href="./manifest.json"/>
-  <link rel="stylesheet" href="./styles.css"/>
+  <link rel="stylesheet" href="./styles.css?v=1.4.0"/>
 </head>
 <body>
 <header>
   <div>
     <h1>LRE</h1>
-    <small>Lottery Research Engine</small>
+    <small data-i18n="subtitle">محرك أبحاث اليانصيب</small>
   </div>
-  <button id="installBtn" hidden>تثبيت</button>
+  <div class="header-actions">
+    <select id="languageSelect" aria-label="Language">
+      <option value="ar">العربية</option>
+      <option value="en">English</option>
+    </select>
+    <button id="installBtn" hidden data-i18n="install">تثبيت</button>
+  </div>
 </header>
 
 <nav>
-  <button data-page="predictions" class="active">التوقعات</button>
-  <button data-page="entry">إدخال نتيجة</button>
-  <button data-page="performance">الأداء</button>
-  <button data-page="research">البحث</button>
+  <button data-page="predictions" class="active" data-i18n="predictions">التوقعات</button>
+  <button data-page="entry" data-i18n="entry">إدخال نتيجة</button>
+  <button data-page="history" data-i18n="history">السجل</button>
+  <button data-page="performance" data-i18n="performance">الأداء</button>
 </nav>
 
 <main>
 <section id="predictions" class="page active">
   <div id="loadError" class="card warning hidden"></div>
+
+  <div class="card status-card">
+    <div>
+      <span data-i18n="activeSnapshot">القائمة النشطة</span>
+      <b id="snapshotTitle">—</b>
+    </div>
+    <span id="snapshotMode" class="badge" data-i18n="experimental">تجريبي</span>
+  </div>
+
   <div class="controls card">
-    <label>الفترة
+    <label><span data-i18n="drawType">الفترة</span>
       <select id="drawType">
         <option value="midday">Midday</option>
         <option value="evening">Evening</option>
       </select>
     </label>
-    <label>القائمة
-      <select id="tierSize">
-        <option value="50">Top 50</option>
-        <option value="100">Top 100</option>
-        <option value="150" selected>Top 150</option>
+    <label><span data-i18n="listSize">القائمة</span>
+      <input id="tierSize" type="number" inputmode="numeric" min="1" max="1000" step="1" value="150" placeholder="150"/>
+      <small data-i18n="listSizeHint">اكتب أي عدد من 1 إلى 1000</small>
+    </label>
+    <label><span data-i18n="behaviorWindow">نافذة مراقبة السلوك</span>
+      <select id="behaviorWindow">
+        <option value="5">5 سنوات</option>
+        <option value="10" selected>10 سنوات</option>
+        <option value="15">15 سنة</option>
       </select>
+      <small data-i18n="behaviorHint">آخر 3 سنوات تحصل على وزن إضافي</small>
     </label>
   </div>
-  <div class="summary-grid">
-    <div class="metric"><span>الإصدار</span><b id="version">—</b></div>
-    <div class="metric"><span>عدد الأرقام</span><b id="count">0</b></div>
-    <div class="metric"><span>أعلى رقم</span><b id="topNumber">—</b></div>
+
+  <div class="card search-card">
+    <label for="numberSearch" data-i18n="searchLabel">ابحث عن رقم</label>
+    <div class="search-row">
+      <input id="numberSearch" inputmode="numeric" maxlength="3" placeholder="370"/>
+      <button id="searchBtn" type="button" data-i18n="searchButton">بحث</button>
+      <button id="clearSearchBtn" type="button" class="secondary" data-i18n="clearButton">مسح</button>
+    </div>
+    <div id="searchResult" class="search-result hidden"></div>
   </div>
+
+  <div class="summary-grid">
+    <div class="metric"><span data-i18n="version">الإصدار</span><b id="version">—</b></div>
+    <div class="metric"><span data-i18n="numberCount">عدد الأرقام</span><b id="count">0</b></div>
+    <div class="metric"><span data-i18n="dailyChange">تغير القائمة</span><b id="dailyChange">—</b></div>
+    <div class="metric"><span data-i18n="behaviorRecords">سجلات نافذة السلوك</span><b id="behaviorRecords">0</b></div>
+  </div>
+
+  <div class="card color-legend">
+    <b data-i18n="colorGuide">دليل قوة التوقع</b>
+    <div class="legend-items">
+      <span><i class="legend-dot strength-green"></i><span data-i18n="strongest">الأقوى</span></span>
+      <span><i class="legend-dot strength-blue"></i><span data-i18n="strong">قوي</span></span>
+      <span><i class="legend-dot strength-yellow"></i><span data-i18n="medium">أقل</span></span>
+      <span><i class="legend-dot strength-red"></i><span data-i18n="weakest">الأضعف</span></span>
+    </div>
+  </div>
+
+  <div class="card warning" data-i18n="researchWarning">
+    التحديث اليومي تجريبي لأغراض البحث والتسجيل، ولم يثبت تفوقه على العشوائي.
+  </div>
+
   <div id="predictionList" class="number-list"></div>
 </section>
 
 <section id="entry" class="page">
   <form id="resultForm" class="card form">
-    <h2>إدخال نتيجة يومية</h2>
-    <label>التاريخ<input id="resultDate" type="date" required/></label>
-    <label>الفترة<select id="resultDraw"><option value="midday">Midday</option><option value="evening">Evening</option></select></label>
-    <label>الرقم الفائز<input id="winningNumber" inputmode="numeric" maxlength="3" pattern="\d{3}" placeholder="007" required/></label>
-    <button type="submit">حفظ وتقييم</button>
+    <h2 data-i18n="dailyEntry">إدخال نتيجة السحب</h2>
+    <label><span data-i18n="date">التاريخ</span><input id="resultDate" type="date" required/></label>
+    <label><span data-i18n="drawType">الفترة</span>
+      <select id="resultDraw">
+        <option value="midday">Midday</option>
+        <option value="evening">Evening</option>
+      </select>
+    </label>
+    <label><span data-i18n="winningNumber">الرقم الفائز</span>
+      <input id="winningNumber" inputmode="numeric" maxlength="3" pattern="\d{3}" placeholder="007" required/>
+    </label>
+    <button type="submit" data-i18n="saveGenerate">حفظ وإنشاء توقع السحب التالي</button>
   </form>
   <div id="lastEvaluation" class="card hidden"></div>
+</section>
+
+<section id="history" class="page">
   <div class="card">
-    <h2>سجل النتائج</h2>
+    <h2 data-i18n="snapshotHistory">سجل القوائم</h2>
+    <div id="snapshotHistory"></div>
+  </div>
+  <div class="card">
+    <h2 data-i18n="resultsLog">سجل النتائج</h2>
     <div id="resultsLog"></div>
   </div>
 </section>
 
 <section id="performance" class="page">
   <div class="summary-grid">
-    <div class="metric"><span>إجمالي النتائج</span><b id="totalResults">0</b></div>
+    <div class="metric"><span data-i18n="totalResults">إجمالي النتائج</span><b id="totalResults">0</b></div>
     <div class="metric"><span>Top 50</span><b id="perf50">—</b></div>
     <div class="metric"><span>Top 100</span><b id="perf100">—</b></div>
     <div class="metric"><span>Top 150</span><b id="perf150">—</b></div>
   </div>
   <div class="card">
-    <h2>مقارنة تاريخية</h2>
-    <div id="benchmarks"></div>
+    <h2 data-i18n="dailyChangeDetails">آخر تغير في القائمة</h2>
+    <div id="changeDetails">—</div>
   </div>
-</section>
-
-<section id="research" class="page">
-  <div class="card">
-    <h2>حالة الفرضيات</h2>
-    <div class="hypothesis good"><b>الأحدث 25% داخل المنطقة</b><span>إشارة تاريخية متكررة، لكنها لم تكفِ وحدها للتفوق في 2026.</span></div>
-    <div class="hypothesis bad"><b>ضغط الترشيح</b><span>مستبعد حاليًا.</span></div>
-    <div class="hypothesis warn"><b>Age + Month</b><span>مفيد في بعض الاختبارات وغير ثابت عبر السنوات.</span></div>
-    <div class="hypothesis bad"><b>LRE v1.0 على 2026</b><span>لم يتفوق على خط الأساس العشوائي.</span></div>
-  </div>
-  <div class="card warning">
-    هذا التطبيق أداة بحثية لتسجيل الاختبارات، وليس ضمانًا لنتيجة أو ربح.
+  <div class="card warning" data-i18n="performanceDisclaimer">
+    هذه النسب تقيس نتائجك المسجلة فقط، ولا تعني ضمانًا أو أفضلية مستقبلية.
   </div>
 </section>
 </main>
 
-<script src="./app.js"></script>
+<script src="./app.js?v=1.4.0"></script>
 </body>
 </html>

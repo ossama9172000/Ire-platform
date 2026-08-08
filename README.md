@@ -1,18 +1,32 @@
-# LRE Mobile MVP 1.0.2
+# LRE Mobile Final 1.1.0
 
-نسخة مصححة تحتوي على 150 رقم Midday و150 رقم Evening.
+الوظائف:
+- العربية والإنجليزية بالكامل.
+- البحث عن أي رقم.
+- رسالة تأكيد قبل حفظ النتيجة.
+- حفظ نتيجة كل سحب بتاريخها وفترتها.
+- حفظ Snapshot مستقل لكل قائمة.
+- إنشاء قائمة تجريبية جديدة لليوم التالي بعد الحفظ.
+- عرض عدد الأرقام التي دخلت وخرجت ومتوسط تغير المراكز.
+- قياس Top 50 / Top 100 / Top 150 للنتائج المسجلة.
 
-## التحديث على GitHub
-1. احذف الملفات القديمة أو استبدلها.
-2. ارفع الملفات الستة الموجودة داخل هذا المجلد إلى جذر المستودع.
-3. اضغط Commit changes.
-4. انتظر اكتمال GitHub Pages.
-5. افتح الموقع مع تحديث قوي أو نافذة خاصة.
+مهم:
+التحديث اليومي تجريبي للبحث والتسجيل فقط، ولم يثبت تفوقه على العشوائي.
 
-## الملفات
-- index.html
-- styles.css
-- app.js
-- data.json
-- manifest.json
-- README.md
+للتحديث على GitHub:
+استبدل الملفات الستة، ثم Commit changes، وانتظر اكتمال GitHub Pages.
+
+
+## Version 1.2.0
+- Flexible prediction result count from 1 to 1000.
+- Existing saved snapshots are automatically expanded to the full ranked list.
+
+- Version 1.3.0: color-coded prediction strength in four relative groups based on the selected list size.
+
+
+## Version 1.4.0
+- Moving behavior window: 5, 10, or 15 years; 10 years is the default.
+- Recent 3 years receive an additional weight.
+- Midday and Evening histories remain completely separate.
+- The app displays how many saved records actually fall inside the selected window.
+- Behavioral re-ranking uses only records dated before the snapshot being evaluated.
