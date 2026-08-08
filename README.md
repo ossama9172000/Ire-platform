@@ -1,9 +1,2 @@
-# LRE Mobile Final 1.8.2 — Smart Reduction Optimizer
-
-الجديد:
-- لا يختار قائمة كبيرة لمجرد ارتفاع Hit Rate.
-- يقارن Uplift فوق العشوائي لكل حجم قائمة.
-- يختبر 50، 75، 100، 125، 150، 175، 200، 225، 250، 300، 350، 400.
-- إذا كانت قائمة أصغر ضمن 3 نقاط مئوية من أفضل Uplift، يختار الأصغر.
-- يعرض جدول مقارنة كامل داخل Smart Reduction.
-- Midday وEvening منفصلان.
+# LRE Mobile Final 1.9.0
+Historical Benchmark 2021–2026 added. Daily replay remains Jan 2026 until historical snapshots are imported.

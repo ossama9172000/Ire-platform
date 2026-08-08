@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#163A5F"/>
   <title>LRE Mobile</title>
   <link rel="manifest" href="./manifest.json"/>
-  <link rel="stylesheet" href="./styles.css?v=1.8.2"/>
+  <link rel="stylesheet" href="./styles.css?v=1.9.0"/>
 </head>
 <body>
 <header>
@@ -31,6 +31,7 @@
   <button data-page="backtest" data-i18n="backtest">اختبار تاريخي</button>
   <button data-page="sourceMonth" data-i18n="sourceMonth">حركة آخر ظهور</button>
   <button data-page="reduction" data-i18n="smartReduction">تقليل الأرقام</button>
+<button data-page="benchmark">2021–2026 Benchmark</button>
 </nav>
 
 <main>
@@ -359,8 +360,8 @@
   <div class="card warning" id="redNote"></div>
 </section>
 
-</main>
+<section id="benchmark" class="page"><div class="card"><h2>Historical Benchmark 2021–2026</h2><p>Walk-forward benchmark; Midday and Evening never mixed.</p><div class="controls"><label>From<input id="benchFrom" type="date" value="2021-07-01" min="2021-07-01" max="2026-08-01"></label><label>To<input id="benchTo" type="date" value="2025-12-31" min="2021-07-01" max="2026-08-01"></label><label>Draw<select id="benchDraw"><option value="midday">Midday</option><option value="evening">Evening</option></select></label></div><div id="benchRangeNote" class="warning"></div></div><div class="summary-grid"><div class="metric"><span>Valid draws</span><b id="benchValid">—</b></div><div class="metric"><span>Best mean rank</span><b id="benchBestRank">—</b></div><div class="metric"><span>Best Top 150</span><b id="benchBest150">—</b></div></div><div class="card"><div class="table-wrap"><table class="bt-table"><thead><tr><th>Model</th><th>Tests</th><th>Mean rank</th><th>Top50</th><th>Top100</th><th>Top150</th><th>Top300</th><th>Top500</th></tr></thead><tbody id="benchRows"></tbody></table></div></div><div class="card warning"><b>Replay limitation:</b> Daily locked replay remains January 2026 only until historical daily snapshots are imported.</div></section></main>
 
-<script src="./app.js?v=1.8.2"></script>
+<script src="./app.js?v=1.9.0"></script>
 </body>
 </html>

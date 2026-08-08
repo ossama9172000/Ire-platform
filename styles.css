@@ -76,3 +76,5 @@ nav button{min-width:0;overflow:hidden;text-overflow:ellipsis}
 .optimizer-summary>div{background:#f3f7fa;padding:10px;border-radius:10px;text-align:center}
 .optimizer-summary span{display:block;font-size:12px;color:#667}.optimizer-summary b{font-size:20px}
 .optimizer-details{margin-top:10px}.optimizer-details summary{cursor:pointer;font-weight:700;padding:8px 0}
+
+#benchmark .controls{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}

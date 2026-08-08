@@ -63,7 +63,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.8.2',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.9.0',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -521,7 +521,7 @@ if(inlineApply)inlineApply.addEventListener('click',()=>{
  localStorage.setItem('lreTierSize',String(k));
  renderPredictions();
 });
-function renderAll(){if(!DATA)return;ensureSmartReductionCard();renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction()}
+function renderBenchmark(){if(!DATA?.historicalBenchmark||!document.getElementById('benchDraw'))return;const draw=document.getElementById('benchDraw').value;const hb=DATA.historicalBenchmark;const rows=hb.models.filter(x=>x.draw===draw);document.getElementById('benchValid').textContent=draw==='midday'?hb.coverage.middayValidDraws:hb.coverage.eveningValidDraws;const br=[...rows].sort((a,b)=>a.meanRank-b.meanRank)[0],b150=[...rows].sort((a,b)=>b.top150-a.top150)[0];document.getElementById('benchBestRank').textContent=br.meanRank.toFixed(1);document.getElementById('benchBest150').textContent=(b150.top150*100).toFixed(1)+'%';document.getElementById('benchRows').innerHTML=rows.map(r=>`<tr><td>${r.model}</td><td>${r.tests}</td><td>${r.meanRank.toFixed(1)}</td><td>${(r.top50*100).toFixed(1)}%</td><td>${(r.top100*100).toFixed(1)}%</td><td>${(r.top150*100).toFixed(1)}%</td><td>${(r.top300*100).toFixed(1)}%</td><td>${(r.top500*100).toFixed(1)}%</td></tr>`).join('');const from=document.getElementById('benchFrom').value,to=document.getElementById('benchTo').value;document.getElementById('benchRangeNote').textContent=`Available verified metrics are aggregate for 2021-07-01 → 2026-08-01; ${from} → ${to} is a requested range, not yet a day-level recomputation.`;}['benchDraw','benchFrom','benchTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',renderBenchmark)});function renderAll(){if(!DATA)return;ensureSmartReductionCard();renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction();renderBenchmark()}
 
 
 
