@@ -63,7 +63,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.10.1',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.10.2',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -521,7 +521,42 @@ if(inlineApply)inlineApply.addEventListener('click',()=>{
  localStorage.setItem('lreTierSize',String(k));
  renderPredictions();
 });
-function renderBenchmark(){if(!DATA?.historicalBenchmark||!document.getElementById('benchDraw'))return;const draw=document.getElementById('benchDraw').value;const hb=DATA.historicalBenchmark;const rows=hb.models.filter(x=>x.draw===draw);document.getElementById('benchValid').textContent=draw==='midday'?hb.coverage.middayValidDraws:hb.coverage.eveningValidDraws;const br=[...rows].sort((a,b)=>a.meanRank-b.meanRank)[0],b150=[...rows].sort((a,b)=>b.top150-a.top150)[0];document.getElementById('benchBestRank').textContent=br.meanRank.toFixed(1);document.getElementById('benchBest150').textContent=(b150.top150*100).toFixed(1)+'%';document.getElementById('benchRows').innerHTML=rows.map(r=>`<tr><td>${r.model}</td><td>${r.tests}</td><td>${r.meanRank.toFixed(1)}</td><td>${(r.top50*100).toFixed(1)}%</td><td>${(r.top100*100).toFixed(1)}%</td><td>${(r.top150*100).toFixed(1)}%</td><td>${(r.top300*100).toFixed(1)}%</td><td>${(r.top500*100).toFixed(1)}%</td></tr>`).join('');const from=document.getElementById('benchFrom').value,to=document.getElementById('benchTo').value;document.getElementById('benchRangeNote').textContent=`Available verified metrics are aggregate for 2021-07-01 → 2026-08-01; ${from} → ${to} is a requested range, not yet a day-level recomputation.`;}['benchDraw','benchFrom','benchTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',renderBenchmark)});function renderReplayLab(){if(!DATA?.sourceMonthReplay||!document.getElementById('replayDate'))return;const date=document.getElementById('replayDate').value,draw=document.getElementById('replayDraw').value,k=Number(document.getElementById('replayK').value||150);const row=DATA.sourceMonthReplay.rows.find(r=>r.date===date&&r.draw===draw);if(!row){document.getElementById('replayWinner').textContent='—';document.getElementById('replayRank').textContent='—';document.getElementById('replaySource').textContent='—';document.getElementById('replayHit').textContent='لا يوجد سحب';document.getElementById('replayNumbers').innerHTML='';}else{document.getElementById('replayWinner').textContent=row.winner;document.getElementById('replayRank').textContent='#'+row.rank;document.getElementById('replaySource').textContent=row.sourceRegion;document.getElementById('replayHit').textContent=row.rank<=k?'✅ نعم':'❌ لا';document.getElementById('replayNumbers').innerHTML=row.top500.slice(0,k).map((n,i)=>`<span class="number-chip ${Number(row.winner)===n?'winner-chip':''}">${String(n).padStart(3,'0')}<small>#${i+1}</small></span>`).join('');}const s=DATA.sourceMonthReplay.summary[draw];document.getElementById('replaySummary').innerHTML=`${draw} — ${s.draws} سحب — Mean rank ${s.meanRank}<br>Top50 ${(s.top50*100).toFixed(1)}% | Top100 ${(s.top100*100).toFixed(1)}% | Top150 ${(s.top150*100).toFixed(1)}% | Top200 ${(s.top200*100).toFixed(1)}% | Top300 ${(s.top300*100).toFixed(1)}% | Top500 ${(s.top500*100).toFixed(1)}%`;}['replayDate','replayDraw','replayK'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',renderReplayLab)});function renderAll(){if(!DATA)return;ensureSmartReductionCard();renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction();renderBenchmark();renderReplayLab()}
+function renderBenchmark(){if(!DATA?.historicalBenchmark||!document.getElementById('benchDraw'))return;const draw=document.getElementById('benchDraw').value;const hb=DATA.historicalBenchmark;const rows=hb.models.filter(x=>x.draw===draw);document.getElementById('benchValid').textContent=draw==='midday'?hb.coverage.middayValidDraws:hb.coverage.eveningValidDraws;const br=[...rows].sort((a,b)=>a.meanRank-b.meanRank)[0],b150=[...rows].sort((a,b)=>b.top150-a.top150)[0];document.getElementById('benchBestRank').textContent=br.meanRank.toFixed(1);document.getElementById('benchBest150').textContent=(b150.top150*100).toFixed(1)+'%';document.getElementById('benchRows').innerHTML=rows.map(r=>`<tr><td>${r.model}</td><td>${r.tests}</td><td>${r.meanRank.toFixed(1)}</td><td>${(r.top50*100).toFixed(1)}%</td><td>${(r.top100*100).toFixed(1)}%</td><td>${(r.top150*100).toFixed(1)}%</td><td>${(r.top300*100).toFixed(1)}%</td><td>${(r.top500*100).toFixed(1)}%</td></tr>`).join('');const from=document.getElementById('benchFrom').value,to=document.getElementById('benchTo').value;document.getElementById('benchRangeNote').textContent=`Available verified metrics are aggregate for 2021-07-01 → 2026-08-01; ${from} → ${to} is a requested range, not yet a day-level recomputation.`;}['benchDraw','benchFrom','benchTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',renderBenchmark)});
+function ensureReplayLab(){
+  if(!document.querySelector('[data-page="replayLab"]')){
+    const benchBtn=document.querySelector('[data-page="benchmark"]');
+    if(benchBtn){
+      const btn=document.createElement('button');
+      btn.setAttribute('data-page','replayLab');
+      btn.textContent='Replay 2021–2025';
+      benchBtn.insertAdjacentElement('afterend',btn);
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('[data-page]').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+        const page=document.getElementById('replayLab');
+        if(page) page.classList.add('active');
+        if(typeof renderReplayLab==='function') renderReplayLab();
+      });
+    }
+  }
+  if(!document.getElementById('replayLab')){
+    const main=document.querySelector('main');
+    if(main){
+      const sec=document.createElement('section');
+      sec.id='replayLab';
+      sec.className='page';
+      sec.innerHTML=`<div class="card"><h2>Historical Replay 2021–2025</h2><p>اختبار يومي مقفول: كل سنة تتعلم فقط من السنوات السابقة لها، وMidday/Evening منفصلان.</p><div class="controls"><label>التاريخ<input id="replayDate" type="date" min="2021-01-01" max="2025-12-31" value="2025-12-31"></label><label>الفترة<select id="replayDraw"><option value="midday">Midday</option><option value="evening">Evening</option></select></label><label>عدد الأرقام<select id="replayK"><option>50</option><option>75</option><option>100</option><option>125</option><option selected>150</option><option>175</option><option>200</option><option>250</option><option>300</option><option>350</option><option>400</option><option>500</option></select></label></div></div><div class="summary-grid"><div class="metric"><span>الرقم الفائز</span><b id="replayWinner">—</b></div><div class="metric"><span>ترتيبه</span><b id="replayRank">—</b></div><div class="metric"><span>منطقة آخر ظهور</span><b id="replaySource">—</b></div><div class="metric"><span>داخل القائمة؟</span><b id="replayHit">—</b></div></div><div class="card"><h3>القائمة التي كان سيختارها النموذج</h3><div id="replayNumbers" class="number-grid"></div></div><div class="card"><h3>ملخص 2021–2025</h3><div id="replaySummary"></div></div>`;
+      main.appendChild(sec);
+      ['replayDate','replayDraw','replayK'].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) el.addEventListener('change',renderReplayLab);
+      });
+    }
+  }
+}
+
+function renderReplayLab(){if(!DATA?.sourceMonthReplay||!document.getElementById('replayDate'))return;const date=document.getElementById('replayDate').value,draw=document.getElementById('replayDraw').value,k=Number(document.getElementById('replayK').value||150);const row=DATA.sourceMonthReplay.rows.find(r=>r.date===date&&r.draw===draw);if(!row){document.getElementById('replayWinner').textContent='—';document.getElementById('replayRank').textContent='—';document.getElementById('replaySource').textContent='—';document.getElementById('replayHit').textContent='لا يوجد سحب';document.getElementById('replayNumbers').innerHTML='';}else{document.getElementById('replayWinner').textContent=row.winner;document.getElementById('replayRank').textContent='#'+row.rank;document.getElementById('replaySource').textContent=row.sourceRegion;document.getElementById('replayHit').textContent=row.rank<=k?'✅ نعم':'❌ لا';document.getElementById('replayNumbers').innerHTML=row.top500.slice(0,k).map((n,i)=>`<span class="number-chip ${Number(row.winner)===n?'winner-chip':''}">${String(n).padStart(3,'0')}<small>#${i+1}</small></span>`).join('');}const s=DATA.sourceMonthReplay.summary[draw];document.getElementById('replaySummary').innerHTML=`${draw} — ${s.draws} سحب — Mean rank ${s.meanRank}<br>Top50 ${(s.top50*100).toFixed(1)}% | Top100 ${(s.top100*100).toFixed(1)}% | Top150 ${(s.top150*100).toFixed(1)}% | Top200 ${(s.top200*100).toFixed(1)}% | Top300 ${(s.top300*100).toFixed(1)}% | Top500 ${(s.top500*100).toFixed(1)}%`;}['replayDate','replayDraw','replayK'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',renderReplayLab)});function renderAll(){if(!DATA)return;ensureSmartReductionCard();ensureReplayLab();renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction();renderBenchmark();renderReplayLab()}
 
 
 

@@ -1,7 +1,6 @@
-# LRE Mobile Final 1.10.1 FIX
+# LRE Mobile Final 1.10.2 — Self-Healing Replay Fix
 
-Fix:
-- Replay 2021–2025 tab is now visible in the navigation bar.
-- Historical Replay section from v1.10.0 is unchanged.
-- Updated cache versions to force GitHub Pages/Chrome to load the fixed files.
-- Updated obsolete benchmark warning.
+- Replay 2021–2025 button is injected automatically by app.js if index.html is stale.
+- Replay page is also injected automatically if missing.
+- Cache-busted to 1.10.2.
+- Historical replay data and model remain unchanged from 1.10.0.
