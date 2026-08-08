@@ -1,7 +1,7 @@
 
 let DATA=null;
 const $=s=>document.querySelector(s);
-const STORAGE={lang:'lreLang',results:'lreResultsFinal',snapshots:'lreSnapshotsFinal',active:'lreActiveSnapshot',window:'lreBehaviorWindow'};
+const STORAGE={lang:'lreLang',results:'lreResultsFinal',snapshots:'lreSnapshotsFinal',active:'lreActiveSnapshot',window:'lreBehaviorWindow',backtestModel:'lreBacktestModel'};
 const T={
  ar:{
  subtitle:'محرك أبحاث اليانصيب',install:'تثبيت',predictions:'التوقعات',entry:'إدخال نتيجة',history:'السجل',performance:'الأداء',
@@ -16,7 +16,7 @@ const T={
  confirmTitle:'هل أنت متأكد أنك تريد حفظ نتيجة هذا السحب؟',drawPeriod:'فترة السحب',duplicate:'تنبيه: توجد نتيجة محفوظة بالفعل لنفس التاريخ والفترة.',
  saved:'تم حفظ النتيجة',nextCreated:'تم إنشاء قائمة تجريبية للسحب التالي',top:'Top',miss:'خارج Top 150',
  kept:'بقي',entered:'دخل',exited:'خرج',avgMove:'متوسط الحركة',view:'عرض',base:'القائمة الأساسية',
- midday:'Midday',evening:'Evening',loadError:'تعذر تحميل بيانات التطبيق',behaviorWindow:'نافذة مراقبة السلوك',behaviorHint:'آخر 3 سنوات تحصل على وزن إضافي',behaviorRecords:'سجلات نافذة السلوك',longTerm:'سلوك طويل',recentTrend:'اتجاه حديث'
+ midday:'Midday',evening:'Evening',loadError:'تعذر تحميل بيانات التطبيق',behaviorWindow:'نافذة مراقبة السلوك',behaviorHint:'آخر 3 سنوات تحصل على وزن إضافي',behaviorRecords:'سجلات نافذة السلوك',longTerm:'سلوك طويل',recentTrend:'اتجاه حديث',backtest:'اختبار تاريخي',historicalBacktest:'الاختبار التاريخي',backtestExplain:'اختبار مقفول: كل يوم تم تقييمه باستخدام المعلومات المتاحة قبله فقط.',testMonth:'الشهر',backtestModel:'النموذج',testTop:'حد Top للاختبار',testedDraws:'السحوبات المختبرة',hits:'الإصابات',hitRate:'نسبة الإصابة',randomBaseline:'الخط العشوائي',averageRank:'متوسط الترتيب',result:'النتيجة'
  },
  en:{
  subtitle:'Lottery Research Engine',install:'Install',predictions:'Predictions',entry:'Enter Result',history:'History',performance:'Performance',
@@ -31,7 +31,7 @@ const T={
  confirmTitle:'Are you sure you want to save this draw result?',drawPeriod:'Draw period',duplicate:'Warning: A result already exists for the same date and draw.',
  saved:'Result saved',nextCreated:'Experimental next-draw list created',top:'Top',miss:'Outside Top 150',
  kept:'kept',entered:'entered',exited:'exited',avgMove:'average movement',view:'View',base:'Base list',
- midday:'Midday',evening:'Evening',loadError:'Could not load app data',behaviorWindow:'Behavior window',behaviorHint:'The latest 3 years receive extra weight',behaviorRecords:'Behavior-window records',longTerm:'Long-term behavior',recentTrend:'Recent trend'
+ midday:'Midday',evening:'Evening',loadError:'Could not load app data',behaviorWindow:'Behavior window',behaviorHint:'The latest 3 years receive extra weight',behaviorRecords:'Behavior-window records',longTerm:'Long-term behavior',recentTrend:'Recent trend',backtest:'Backtest',historicalBacktest:'Historical backtest',backtestExplain:'Locked test: each day was evaluated using only information available before that draw.',testMonth:'Month',backtestModel:'Model',testTop:'Top cutoff',testedDraws:'Tested draws',hits:'Hits',hitRate:'Hit rate',randomBaseline:'Random baseline',averageRank:'Average rank',result:'Result'
  }
 };
 let lang=localStorage.getItem(STORAGE.lang)||'ar';
@@ -62,7 +62,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.4.0',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.5.0',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -110,11 +110,34 @@ function selectedListSize(){
 
 function selectedBehaviorWindow(){
  const el=$('#behaviorWindow');
- let years=Number(el?.value||localStorage.getItem(STORAGE.window)||10);
- if(![5,10,15].includes(years))years=10;
- if(el)el.value=String(years);
- localStorage.setItem(STORAGE.window,String(years));
- return years;
+ let raw=String(el?.value||localStorage.getItem(STORAGE.window)||'10');
+ const allowed=['auto','3','5','7','10','15','20'];
+ if(!allowed.includes(raw))raw='10';
+ if(el)el.value=raw;
+ localStorage.setItem(STORAGE.window,raw);
+ if(raw!=='auto')return Number(raw);
+ // Auto is conservative: with sparse local history it falls back to 10 years.
+ // When enough dated records exist, choose the candidate window with the best
+ // leave-one-out mean rank proxy, independently per draw through recordsInWindow().
+ return autoBehaviorWindow($('#drawType')?.value||'midday');
+}
+function autoBehaviorWindow(draw){
+ const all=getResults().filter(r=>r.draw===draw).sort((a,b)=>a.date.localeCompare(b.date));
+ if(all.length<60)return 10;
+ const candidates=[3,5,7,10,15,20];
+ const latest=all[all.length-1].date;
+ const anchor=new Date(latest+'T12:00:00');
+ let best=10,bestScore=-Infinity;
+ for(const years of candidates){
+   const cutoff=new Date(anchor);cutoff.setFullYear(cutoff.getFullYear()-years);
+   const rows=all.filter(r=>new Date(r.date+'T12:00:00')>=cutoff);
+   if(rows.length<30)continue;
+   // Reward stable coverage but penalize tiny samples.
+   const rate=rows.filter(r=>(r.rank||1001)<=150).length/rows.length;
+   const score=rate-0.5/Math.sqrt(rows.length);
+   if(score>bestScore){bestScore=score;best=years}
+ }
+ return best;
 }
 function recordsInWindow(draw,anchorDate){
  const years=selectedBehaviorWindow();
@@ -266,7 +289,8 @@ $('#resultForm').onsubmit=e=>{
  if(!confirm(msg))return;
 
  const previous=snapshotForDraw(draw);
- const rank=previous?previous.numbers.findIndex(x=>x.number===number)+1:0;
+ const rankedPrevious=previous?rankedForSnapshot(previous):[];
+ const rank=rankedPrevious.findIndex(x=>x.number===number)+1;
  const item={date,draw,number,rank,top50:rank>0&&rank<=50,top100:rank>0&&rank<=100,top150:rank>0&&rank<=150,createdAt:new Date().toISOString()};
  results.unshift(item);saveJSON(STORAGE.results,results);
 
@@ -311,7 +335,27 @@ function renderPerformance(){
  const s=getActiveSnapshot();
  $('#changeDetails').innerHTML=s&&s.change?`${t('kept')}: <b>${s.change.kept}</b> | ${t('entered')}: <b>${s.change.entered}</b> | ${t('exited')}: <b>${s.change.exited}</b> | ${t('avgMove')}: <b>${s.change.avgMove.toFixed(1)}</b>`:'—';
 }
-function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance()}
+function renderBacktest(){
+ if(!DATA?.backtestArchive)return;
+ const draw=$('#backtestDraw')?.value||'midday';
+ const model=$('#backtestModel')?.value||'A';
+ let top=Math.round(Number($('#backtestTop')?.value)||150);top=Math.max(1,Math.min(1000,top));if($('#backtestTop'))$('#backtestTop').value=top;
+ const rows=DATA.backtestArchive.rows.filter(r=>draw==='all'||r.draw===draw);
+ const hits=rows.filter(r=>r[model]<=top).length;
+ const rate=rows.length?hits/rows.length:0, random=top/1000;
+ const avg=rows.length?rows.reduce((a,r)=>a+r[model],0)/rows.length:0;
+ $('#btDraws').textContent=rows.length;$('#btHits').textContent=hits;$('#btRate').textContent=(rate*100).toFixed(1)+'%';
+ $('#btRandom').textContent=(random*100).toFixed(1)+'%';$('#btAvg').textContent=avg?avg.toFixed(1):'—';
+ const delta=rate-random;
+ $('#btSignal').innerHTML=(lang==='ar'
+   ?`مقارنة بالعشوائي: <b>${delta>=0?'+':''}${(delta*100).toFixed(1)} نقطة مئوية</b>. التدريب مقفول عند <b>${DATA.backtestArchive.trainingCutoff}</b>.`
+   :`Versus random: <b>${delta>=0?'+':''}${(delta*100).toFixed(1)} percentage points</b>. Training cutoff: <b>${DATA.backtestArchive.trainingCutoff}</b>.`);
+ $('#btRows').innerHTML=rows.map(r=>`<tr><td>${r.date}</td><td>${r.draw==='midday'?t('midday'):t('evening')}</td><td><b>${r.actual}</b></td><td>#${r[model]}</td><td class="${r[model]<=top?'hit':'miss'}">${r[model]<=top?'✅':'❌'}</td></tr>`).join('');
+}
+['backtestDraw','backtestModel','backtestTop'].forEach(id=>{
+ const el=document.getElementById(id);if(el)el.addEventListener('input',renderBacktest);
+});
+function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance();renderBacktest()}
 
 let deferredPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').hidden=false});
 $('#installBtn').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('#installBtn').hidden=true}};

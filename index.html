@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#163A5F"/>
   <title>LRE Mobile</title>
   <link rel="manifest" href="./manifest.json"/>
-  <link rel="stylesheet" href="./styles.css?v=1.4.0"/>
+  <link rel="stylesheet" href="./styles.css?v=1.5.0"/>
 </head>
 <body>
 <header>
@@ -28,6 +28,7 @@
   <button data-page="entry" data-i18n="entry">إدخال نتيجة</button>
   <button data-page="history" data-i18n="history">السجل</button>
   <button data-page="performance" data-i18n="performance">الأداء</button>
+  <button data-page="backtest" data-i18n="backtest">اختبار تاريخي</button>
 </nav>
 
 <main>
@@ -55,9 +56,13 @@
     </label>
     <label><span data-i18n="behaviorWindow">نافذة مراقبة السلوك</span>
       <select id="behaviorWindow">
+        <option value="auto">Auto</option>
+        <option value="3">3 سنوات</option>
         <option value="5">5 سنوات</option>
+        <option value="7">7 سنوات</option>
         <option value="10" selected>10 سنوات</option>
         <option value="15">15 سنة</option>
+        <option value="20">20 سنة</option>
       </select>
       <small data-i18n="behaviorHint">آخر 3 سنوات تحصل على وزن إضافي</small>
     </label>
@@ -141,8 +146,52 @@
     هذه النسب تقيس نتائجك المسجلة فقط، ولا تعني ضمانًا أو أفضلية مستقبلية.
   </div>
 </section>
+
+<section id="backtest" class="page">
+  <div class="card">
+    <h2 data-i18n="historicalBacktest">الاختبار التاريخي</h2>
+    <p data-i18n="backtestExplain">اختبار مقفول: كل يوم تم تقييمه باستخدام المعلومات المتاحة قبله فقط.</p>
+    <div class="controls">
+      <label><span data-i18n="testMonth">الشهر</span>
+        <select id="backtestMonth"><option value="2026-01">يناير 2026</option></select>
+      </label>
+      <label><span data-i18n="drawType">الفترة</span>
+        <select id="backtestDraw">
+          <option value="midday">Midday</option><option value="evening">Evening</option><option value="all">Midday + Evening</option>
+        </select>
+      </label>
+      <label><span data-i18n="backtestModel">النموذج</span>
+        <select id="backtestModel">
+          <option value="A">A — Baseline</option>
+          <option value="B">B — Gap</option>
+          <option value="C">C — Odd/Even</option>
+          <option value="D">D — Weekday</option>
+          <option value="E">E — Sum</option>
+        </select>
+      </label>
+      <label><span data-i18n="testTop">حد Top للاختبار</span>
+        <input id="backtestTop" type="number" inputmode="numeric" min="1" max="1000" value="150"/>
+      </label>
+    </div>
+  </div>
+  <div class="summary-grid">
+    <div class="metric"><span data-i18n="testedDraws">السحوبات المختبرة</span><b id="btDraws">0</b></div>
+    <div class="metric"><span data-i18n="hits">الإصابات</span><b id="btHits">0</b></div>
+    <div class="metric"><span data-i18n="hitRate">نسبة الإصابة</span><b id="btRate">—</b></div>
+    <div class="metric"><span data-i18n="randomBaseline">الخط العشوائي</span><b id="btRandom">—</b></div>
+    <div class="metric"><span data-i18n="averageRank">متوسط الترتيب</span><b id="btAvg">—</b></div>
+  </div>
+  <div id="btSignal" class="card warning"></div>
+  <div class="card">
+    <div class="table-wrap"><table class="bt-table">
+      <thead><tr><th data-i18n="date">التاريخ</th><th data-i18n="drawType">الفترة</th><th data-i18n="winningNumber">الرقم الفائز</th><th data-i18n="rank">الترتيب</th><th data-i18n="result">النتيجة</th></tr></thead>
+      <tbody id="btRows"></tbody>
+    </table></div>
+  </div>
+</section>
+
 </main>
 
-<script src="./app.js?v=1.4.0"></script>
+<script src="./app.js?v=1.5.0"></script>
 </body>
 </html>

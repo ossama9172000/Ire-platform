@@ -43,3 +43,7 @@ select,input{padding:11px;border:1px solid #cad4dc;border-radius:9px;background:
 .tier.strength-green,.tier.strength-blue,.tier.strength-yellow,.tier.strength-red{background:var(--strength-border);color:white}
 .legend-dot.strength-green,.legend-dot.strength-blue,.legend-dot.strength-yellow,.legend-dot.strength-red{background:var(--strength-border)}
 .number-card.strength-green .rank,.number-card.strength-blue .rank,.number-card.strength-yellow .rank,.number-card.strength-red .rank{color:var(--strength-text)}
+
+.table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}.bt-table{width:100%;border-collapse:collapse;min-width:560px}
+.bt-table th,.bt-table td{padding:9px 8px;border-bottom:1px solid #e2e8ee;text-align:center}.bt-table th{background:#f5f8fb;position:sticky;top:0}
+#backtest .controls{margin:0;box-shadow:none;padding:0;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}

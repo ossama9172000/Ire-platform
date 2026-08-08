@@ -1,32 +1,17 @@
-# LRE Mobile Final 1.1.0
+# LRE Mobile Final 1.5.0
 
-الوظائف:
-- العربية والإنجليزية بالكامل.
-- البحث عن أي رقم.
-- رسالة تأكيد قبل حفظ النتيجة.
-- حفظ نتيجة كل سحب بتاريخها وفترتها.
-- حفظ Snapshot مستقل لكل قائمة.
-- إنشاء قائمة تجريبية جديدة لليوم التالي بعد الحفظ.
-- عرض عدد الأرقام التي دخلت وخرجت ومتوسط تغير المراكز.
-- قياس Top 50 / Top 100 / Top 150 للنتائج المسجلة.
+أهم التغييرات:
+- قائمة فعلية كاملة من 000 إلى 999، وبالتالي اختيار 1–1000 يعمل فعليًا.
+- الحفاظ على الـ Top 150 المدرب الموجود في 1.4.0؛ المراكز 151–1000 ممتدة بترتيب إحصائي يعتمد على تكرار الخانات لكل فترة بشكل منفصل.
+- نافذة السلوك: Auto / 3 / 5 / 7 / 10 / 15 / 20 سنة.
+- فصل Midday و Evening بالكامل.
+- صفحة Historical Backtest لاختبار يناير 2026 بدون تسريب مستقبلي.
+- الاختبار التاريخي المحفوظ كان Training cutoff = 2025-12-31 ويُحدَّث بعد كل سحب.
+- مقارنة نسبة الإصابة بخط عشوائي K/1000.
+- الألوان الأربعة الحالية محفوظة كما هي.
 
 مهم:
-التحديث اليومي تجريبي للبحث والتسجيل فقط، ولم يثبت تفوقه على العشوائي.
+هذه أداة بحث وترتيب احتمالي وليست ضمانًا للربح. أي تحسين يجب الحكم عليه بالاختبار التاريخي المقفول ومقارنته بالعشوائي.
 
-للتحديث على GitHub:
-استبدل الملفات الستة، ثم Commit changes، وانتظر اكتمال GitHub Pages.
-
-
-## Version 1.2.0
-- Flexible prediction result count from 1 to 1000.
-- Existing saved snapshots are automatically expanded to the full ranked list.
-
-- Version 1.3.0: color-coded prediction strength in four relative groups based on the selected list size.
-
-
-## Version 1.4.0
-- Moving behavior window: 5, 10, or 15 years; 10 years is the default.
-- Recent 3 years receive an additional weight.
-- Midday and Evening histories remain completely separate.
-- The app displays how many saved records actually fall inside the selected window.
-- Behavioral re-ranking uses only records dated before the snapshot being evaluated.
+للرفع على GitHub:
+استبدل الملفات الستة في المستودع ثم Commit changes وانتظر GitHub Pages.
