@@ -16,7 +16,7 @@ const T={
  confirmTitle:'هل أنت متأكد أنك تريد حفظ نتيجة هذا السحب؟',drawPeriod:'فترة السحب',duplicate:'تنبيه: توجد نتيجة محفوظة بالفعل لنفس التاريخ والفترة.',
  saved:'تم حفظ النتيجة',nextCreated:'تم إنشاء قائمة تجريبية للسحب التالي',top:'Top',miss:'خارج Top 150',
  kept:'بقي',entered:'دخل',exited:'خرج',avgMove:'متوسط الحركة',view:'عرض',base:'القائمة الأساسية',
- midday:'Midday',evening:'Evening',loadError:'تعذر تحميل بيانات التطبيق',behaviorWindow:'نافذة مراقبة السلوك',behaviorHint:'آخر 3 سنوات تحصل على وزن إضافي',behaviorRecords:'سجلات نافذة السلوك',longTerm:'سلوك طويل',recentTrend:'اتجاه حديث',backtest:'اختبار تاريخي',historicalBacktest:'الاختبار التاريخي',backtestExplain:'اختبار مقفول: كل يوم تم تقييمه باستخدام المعلومات المتاحة قبله فقط.',testMonth:'الشهر',backtestModel:'النموذج',testTop:'حد Top للاختبار',testedDraws:'السحوبات المختبرة',hits:'الإصابات',hitRate:'نسبة الإصابة',randomBaseline:'الخط العشوائي',averageRank:'متوسط الترتيب',result:'النتيجة'
+ midday:'Midday',evening:'Evening',loadError:'تعذر تحميل بيانات التطبيق',behaviorWindow:'نافذة مراقبة السلوك',behaviorHint:'آخر 3 سنوات تحصل على وزن إضافي',behaviorRecords:'سجلات نافذة السلوك',longTerm:'سلوك طويل',recentTrend:'اتجاه حديث',backtest:'اختبار تاريخي',historicalBacktest:'الاختبار التاريخي',backtestExplain:'اختبار مقفول: كل يوم تم تقييمه باستخدام المعلومات المتاحة قبله فقط.',testMonth:'الشهر',backtestModel:'النموذج',testTop:'حد Top للاختبار',testedDraws:'السحوبات المختبرة',hits:'الإصابات',hitRate:'نسبة الإصابة',randomBaseline:'الخط العشوائي',averageRank:'متوسط الترتيب',result:'النتيجة',sourceMonth:'حركة آخر ظهور',sourceMonthTitle:'حركة شهر آخر ظهور',sourceMonthExplain:'يراقب من أي سنة/شهر جاء آخر ظهور سابق للأرقام الفائزة، ومتى تعود نفس المنطقة للظهور.',sourceWeight:'وزن عامل الشهر',avgReturn:'متوسط العودة',medianReturn:'وسيط العودة',recentShare:'حصة أحدث 25%',oldShare:'حصة أقدم 25%',cooldownLogic:'منطق الاستبعاد المؤقت',yearByYear:'2020–2025 سنة بسنة',year:'السنة',smartReduction:'تقليل الأرقام',smartReductionTitle:'التقليل الذكي لعدد الأرقام',smartReductionExplain:'يبحث عن أقل عدد أرقام يعطي أفضل كفاءة تغطية في الاختبار التاريخي المقفول، ويقارنه بالعشوائي.',minimumCoverage:'أقل تغطية مقبولة',recommendedCount:'العدد المقترح',measuredCoverage:'التغطية المقاسة',coverageEfficiency:'كفاءة التغطية',numbersRemoved:'أرقام مستبعدة',applyRecommended:'تطبيق العدد المقترح على التوقعات',cutoffComparison:'مقارنة الحدود'
  },
  en:{
  subtitle:'Lottery Research Engine',install:'Install',predictions:'Predictions',entry:'Enter Result',history:'History',performance:'Performance',
@@ -31,7 +31,7 @@ const T={
  confirmTitle:'Are you sure you want to save this draw result?',drawPeriod:'Draw period',duplicate:'Warning: A result already exists for the same date and draw.',
  saved:'Result saved',nextCreated:'Experimental next-draw list created',top:'Top',miss:'Outside Top 150',
  kept:'kept',entered:'entered',exited:'exited',avgMove:'average movement',view:'View',base:'Base list',
- midday:'Midday',evening:'Evening',loadError:'Could not load app data',behaviorWindow:'Behavior window',behaviorHint:'The latest 3 years receive extra weight',behaviorRecords:'Behavior-window records',longTerm:'Long-term behavior',recentTrend:'Recent trend',backtest:'Backtest',historicalBacktest:'Historical backtest',backtestExplain:'Locked test: each day was evaluated using only information available before that draw.',testMonth:'Month',backtestModel:'Model',testTop:'Top cutoff',testedDraws:'Tested draws',hits:'Hits',hitRate:'Hit rate',randomBaseline:'Random baseline',averageRank:'Average rank',result:'Result'
+ midday:'Midday',evening:'Evening',loadError:'Could not load app data',behaviorWindow:'Behavior window',behaviorHint:'The latest 3 years receive extra weight',behaviorRecords:'Behavior-window records',longTerm:'Long-term behavior',recentTrend:'Recent trend',backtest:'Backtest',historicalBacktest:'Historical backtest',backtestExplain:'Locked test: each day was evaluated using only information available before that draw.',testMonth:'Month',backtestModel:'Model',testTop:'Top cutoff',testedDraws:'Tested draws',hits:'Hits',hitRate:'Hit rate',randomBaseline:'Random baseline',averageRank:'Average rank',result:'Result',sourceMonth:'Last-appearance movement',sourceMonthTitle:'Previous-appearance month movement',sourceMonthExplain:'Tracks the year/month of the winning number’s prior appearance and how long the same source region takes to return.',sourceWeight:'Month-factor weight',avgReturn:'Average return',medianReturn:'Median return',recentShare:'Newest 25% share',oldShare:'Oldest 25% share',cooldownLogic:'Temporary cooldown logic',yearByYear:'2020–2025 year by year',year:'Year',smartReduction:'Reduce numbers',smartReductionTitle:'Smart candidate reduction',smartReductionExplain:'Finds the smallest list with the best measured locked-backtest coverage efficiency versus random.',minimumCoverage:'Minimum acceptable coverage',recommendedCount:'Recommended count',measuredCoverage:'Measured coverage',coverageEfficiency:'Coverage efficiency',numbersRemoved:'Numbers removed',applyRecommended:'Apply recommended count to predictions',cutoffComparison:'Cutoff comparison'
  }
 };
 let lang=localStorage.getItem(STORAGE.lang)||'ar';
@@ -62,7 +62,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.5.0',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.7.0',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -355,7 +355,97 @@ function renderBacktest(){
 ['backtestDraw','backtestModel','backtestTop'].forEach(id=>{
  const el=document.getElementById(id);if(el)el.addEventListener('input',renderBacktest);
 });
-function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance();renderBacktest()}
+
+function sourceMonthCooldownFactor(draw, drawsSinceRegionVisit){
+ const info=DATA?.sourceMonthResearch?.learned?.[draw]; if(!info)return 1;
+ const center=info.medianReturnDraws||52;
+ // Soft cooldown, never a hard ban: very recent revisits are discounted;
+ // weight recovers around the empirically learned return interval.
+ const x=Math.max(0,Number(drawsSinceRegionVisit)||0);
+ if(x>=center)return 1;
+ return 0.35 + 0.65*(x/center);
+}
+function renderSourceMonth(){
+ if(!DATA?.sourceMonthResearch)return;
+ const draw=$('#smDraw')?.value||'midday';
+ const info=DATA.sourceMonthResearch.learned[draw];
+ const rows=DATA.sourceMonthResearch.rows.filter(r=>r.draw===draw);
+ $('#smAvg').textContent=info.avgReturnDraws.toFixed(1)+' '+(lang==='ar'?'سحب':'draws');
+ $('#smMedian').textContent=info.medianReturnDraws.toFixed(1)+' '+(lang==='ar'?'سحب':'draws');
+ $('#smLatest').textContent=(info.latest25Share*100).toFixed(1)+'%';
+ $('#smOldest').textContent=(info.oldest25Share*100).toFixed(1)+'%';
+ const center=info.medianReturnDraws;
+ $('#smLogic').innerHTML=lang==='ar'
+   ?`إذا عادت نفس منطقة السنة+الشهر بسرعة بعد زيارتها، لا نحذفها نهائيًا؛ نخفض وزنها مؤقتًا. يعود الوزن تدريجيًا حتى يقترب من الدورة التاريخية، وحاليًا مركزها نحو <b>${center.toFixed(1)} سحب</b> لهذه الفترة.`
+   :`A recently revisited year+month source is not hard-blocked; its weight is temporarily reduced and recovers as it approaches the historical return cycle, currently about <b>${center.toFixed(1)} draws</b>.`;
+ $('#smRows').innerHTML=rows.map(r=>`<tr><td>${r.year}</td><td>${r.avgReturn.toFixed(2)}</td><td>${(r.latest25*100).toFixed(1)}%</td><td>${(r.oldest25*100).toFixed(1)}%</td></tr>`).join('');
+ const ab=DATA.sourceMonthResearch.ablation2025[draw];
+ const delta=(ab.ageMonthTop150-ab.ageOnlyTop150)*100;
+ $('#smValidation').innerHTML=lang==='ar'
+  ?`اختبار 2025: إضافة الشهر إلى عمر آخر ظهور غيّرت Top 150 بمقدار <b>${delta>=0?'+':''}${delta.toFixed(1)} نقطة مئوية</b>. لذلك وزن هذا العامل محدود افتراضيًا إلى <b>${Math.round(DATA.sourceMonthResearch.defaultWeight*100)}%</b> حتى لا يطغى على بقية المحرك.`
+  :`2025 validation: adding source month to last-appearance age changed Top 150 by <b>${delta>=0?'+':''}${delta.toFixed(1)} pp</b>. The factor is therefore capped at <b>${Math.round(DATA.sourceMonthResearch.defaultWeight*100)}%</b> by default.`;
+}
+['smDraw','smWeight'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('input',renderSourceMonth)});
+
+function reductionStats(draw,model,k){
+ const rows=(DATA?.backtestArchive?.rows||[]).filter(r=>r.draw===draw);
+ if(!rows.length)return {n:0,hits:0,rate:0,random:k/1000,eff:0};
+ const hits=rows.filter(r=>Number(r[model])<=k).length;
+ const rate=hits/rows.length;
+ const random=k/1000;
+ return {n:rows.length,hits,rate,random,eff:random>0?rate/random:0};
+}
+function findSweetSpot(draw,model,minCoverage){
+ const cutoffs=DATA?.smartReduction?.candidateCutoffs||[50,100,150,200,250,300,400,500];
+ const stats=cutoffs.map(k=>({k,...reductionStats(draw,model,k)}));
+ // First prefer cutoffs meeting the requested coverage; among them, maximize
+ // efficiency, then prefer fewer numbers. If none qualify, choose the
+ // highest observed coverage per number without exceeding 500.
+ const eligible=stats.filter(s=>s.rate>=minCoverage);
+ const pool=eligible.length?eligible:stats;
+ pool.sort((a,b)=>(b.eff-a.eff)||(a.k-b.k));
+ return {best:pool[0],stats};
+}
+function renderReduction(){
+ if(!DATA?.backtestArchive||!$('#redDraw'))return;
+ const draw=$('#redDraw').value||'midday';
+ const model=$('#redModel').value||'A';
+ const minCoverage=Number($('#redCoverage').value||0.30);
+ const {best,stats}=findSweetSpot(draw,model,minCoverage);
+ if(!best)return;
+ $('#redK').textContent=best.k;
+ $('#redHit').textContent=(best.rate*100).toFixed(1)+'%';
+ $('#redRandom').textContent=(best.random*100).toFixed(1)+'%';
+ $('#redEff').textContent=best.eff.toFixed(2)+'×';
+ $('#redRemoved').textContent=1000-best.k;
+ $('#redRows').innerHTML=stats.map(s=>`<tr class="${s.k===best.k?'recommended-row':''}">
+  <td>${s.k}</td><td>${(s.rate*100).toFixed(1)}%</td><td>${(s.random*100).toFixed(1)}%</td>
+  <td>${s.eff.toFixed(2)}×</td><td>${s.hits}/${s.n}</td></tr>`).join('');
+ const meets=best.rate>=minCoverage;
+ $('#redNote').innerHTML=lang==='ar'
+   ?`${meets?'تم إيجاد حد يحقق التغطية المطلوبة.':'لم يصل أي حد مختبر للتغطية المطلوبة؛ تم اختيار أعلى كفاءة متاحة.'} <b>مهم:</b> هذا الاقتراح مبني على الاختبار المقفول المتاح داخل التطبيق، وليس ضمانًا للسحب القادم.`
+   :`${meets?'A cutoff meeting the requested coverage was found.':'No tested cutoff met the requested coverage; the best available efficiency was selected.'} <b>Important:</b> this is based on the locked backtest stored in the app and is not a guarantee for the next draw.`;
+ $('#applyReduction').dataset.k=best.k;
+}
+['redDraw','redModel','redCoverage'].forEach(id=>{
+ const el=document.getElementById(id); if(el)el.addEventListener('change',renderReduction);
+});
+const applyReductionBtn=document.getElementById('applyReduction');
+if(applyReductionBtn)applyReductionBtn.addEventListener('click',()=>{
+ const k=Math.max(1,Math.min(1000,Number(applyReductionBtn.dataset.k)||150));
+ $('#tierSize').value=k;
+ localStorage.setItem('lreTierSize',String(k));
+ const draw=$('#redDraw')?.value||'midday';
+ $('#drawType').value=draw;
+ const s=snapshotForDraw(draw);if(s)setActive(s.id);
+ document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+ const pbtn=document.querySelector('nav button[data-page="predictions"]');if(pbtn)pbtn.classList.add('active');
+ document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='predictions'));
+ clearSearch();renderPredictions();
+});
+function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction()}
+
+
 
 let deferredPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').hidden=false});
 $('#installBtn').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('#installBtn').hidden=true}};

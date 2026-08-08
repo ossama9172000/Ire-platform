@@ -47,3 +47,5 @@ select,input{padding:11px;border:1px solid #cad4dc;border-radius:9px;background:
 .table-wrap{overflow:auto;-webkit-overflow-scrolling:touch}.bt-table{width:100%;border-collapse:collapse;min-width:560px}
 .bt-table th,.bt-table td{padding:9px 8px;border-bottom:1px solid #e2e8ee;text-align:center}.bt-table th{background:#f5f8fb;position:sticky;top:0}
 #backtest .controls{margin:0;box-shadow:none;padding:0;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+
+.recommended-row{font-weight:700;outline:2px solid currentColor;outline-offset:-2px}

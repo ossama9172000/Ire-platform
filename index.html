@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#163A5F"/>
   <title>LRE Mobile</title>
   <link rel="manifest" href="./manifest.json"/>
-  <link rel="stylesheet" href="./styles.css?v=1.5.0"/>
+  <link rel="stylesheet" href="./styles.css?v=1.7.0"/>
 </head>
 <body>
 <header>
@@ -29,6 +29,8 @@
   <button data-page="history" data-i18n="history">السجل</button>
   <button data-page="performance" data-i18n="performance">الأداء</button>
   <button data-page="backtest" data-i18n="backtest">اختبار تاريخي</button>
+  <button data-page="sourceMonth" data-i18n="sourceMonth">حركة آخر ظهور</button>
+  <button data-page="reduction" data-i18n="smartReduction">تقليل الأرقام</button>
 </nav>
 
 <main>
@@ -190,8 +192,112 @@
   </div>
 </section>
 
+
+<section id="sourceMonth" class="page">
+  <div class="card">
+    <h2 data-i18n="sourceMonthTitle">حركة شهر آخر ظهور</h2>
+    <p data-i18n="sourceMonthExplain">يراقب من أي سنة/شهر جاء آخر ظهور سابق للأرقام الفائزة، ومتى تعود نفس المنطقة للظهور.</p>
+    <div class="controls">
+      <label><span data-i18n="drawType">الفترة</span>
+        <select id="smDraw"><option value="midday">Midday</option><option value="evening">Evening</option></select>
+      </label>
+      <label><span data-i18n="sourceWeight">وزن عامل الشهر</span>
+        <input id="smWeight" type="number" min="0" max="0.30" step="0.01" value="0.12"/>
+      </label>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="metric"><span data-i18n="avgReturn">متوسط العودة</span><b id="smAvg">—</b></div>
+    <div class="metric"><span data-i18n="medianReturn">وسيط العودة</span><b id="smMedian">—</b></div>
+    <div class="metric"><span data-i18n="recentShare">حصة أحدث 25%</span><b id="smLatest">—</b></div>
+    <div class="metric"><span data-i18n="oldShare">حصة أقدم 25%</span><b id="smOldest">—</b></div>
+  </div>
+
+  <div class="card">
+    <h3 data-i18n="cooldownLogic">منطق الاستبعاد المؤقت</h3>
+    <p id="smLogic"></p>
+  </div>
+
+  <div class="card">
+    <h3 data-i18n="yearByYear">2020–2025 سنة بسنة</h3>
+    <div class="table-wrap"><table class="bt-table">
+      <thead><tr><th data-i18n="year">السنة</th><th data-i18n="avgReturn">متوسط العودة</th><th data-i18n="recentShare">أحدث 25%</th><th data-i18n="oldShare">أقدم 25%</th></tr></thead>
+      <tbody id="smRows"></tbody>
+    </table></div>
+  </div>
+
+  <div class="card warning" id="smValidation"></div>
+</section>
+
+
+<section id="reduction" class="page">
+  <div class="card">
+    <h2 data-i18n="smartReductionTitle">التقليل الذكي لعدد الأرقام</h2>
+    <p data-i18n="smartReductionExplain">يبحث عن أقل عدد أرقام يعطي أفضل كفاءة تغطية في الاختبار التاريخي المقفول، ويقارنه بالعشوائي.</p>
+    <div class="controls">
+      <label><span data-i18n="drawType">الفترة</span>
+        <select id="redDraw">
+          <option value="midday">Midday</option>
+          <option value="evening">Evening</option>
+        </select>
+      </label>
+      <label><span data-i18n="backtestModel">النموذج</span>
+        <select id="redModel">
+          <option value="A">A — Baseline</option>
+          <option value="B">B — Gap</option>
+          <option value="C">C — Odd/Even</option>
+          <option value="D">D — Weekday</option>
+          <option value="E">E — Sum</option>
+        </select>
+      </label>
+      <label><span data-i18n="minimumCoverage">أقل تغطية مقبولة</span>
+        <select id="redCoverage">
+          <option value="0.20">20%</option>
+          <option value="0.25">25%</option>
+          <option value="0.30" selected>30%</option>
+          <option value="0.35">35%</option>
+          <option value="0.40">40%</option>
+          <option value="0.45">45%</option>
+          <option value="0.50">50%</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="metric"><span data-i18n="recommendedCount">العدد المقترح</span><b id="redK">—</b></div>
+    <div class="metric"><span data-i18n="measuredCoverage">التغطية المقاسة</span><b id="redHit">—</b></div>
+    <div class="metric"><span data-i18n="randomBaseline">الخط العشوائي</span><b id="redRandom">—</b></div>
+    <div class="metric"><span data-i18n="coverageEfficiency">كفاءة التغطية</span><b id="redEff">—</b></div>
+    <div class="metric"><span data-i18n="numbersRemoved">أرقام مستبعدة</span><b id="redRemoved">—</b></div>
+  </div>
+
+  <div class="card">
+    <button id="applyReduction" data-i18n="applyRecommended">تطبيق العدد المقترح على التوقعات</button>
+  </div>
+
+  <div class="card">
+    <h3 data-i18n="cutoffComparison">مقارنة الحدود</h3>
+    <div class="table-wrap"><table class="bt-table">
+      <thead>
+        <tr>
+          <th>Top K</th>
+          <th data-i18n="hitRate">نسبة الإصابة</th>
+          <th data-i18n="randomBaseline">العشوائي</th>
+          <th data-i18n="coverageEfficiency">الكفاءة</th>
+          <th data-i18n="hits">الإصابات</th>
+        </tr>
+      </thead>
+      <tbody id="redRows"></tbody>
+    </table></div>
+  </div>
+
+  <div class="card warning" id="redNote"></div>
+</section>
+
 </main>
 
-<script src="./app.js?v=1.5.0"></script>
+<script src="./app.js?v=1.7.0"></script>
 </body>
 </html>
