@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#163A5F"/>
   <title>LRE Mobile</title>
   <link rel="manifest" href="./manifest.json"/>
-  <link rel="stylesheet" href="./styles.css?v=1.7.0"/>
+  <link rel="stylesheet" href="./styles.css?v=1.8.0"/>
 </head>
 <body>
 <header>
@@ -59,15 +59,73 @@
     <label><span data-i18n="behaviorWindow">نافذة مراقبة السلوك</span>
       <select id="behaviorWindow">
         <option value="auto">Auto</option>
-        <option value="3">3 سنوات</option>
-        <option value="5">5 سنوات</option>
-        <option value="7">7 سنوات</option>
-        <option value="10" selected>10 سنوات</option>
-        <option value="15">15 سنة</option>
-        <option value="20">20 سنة</option>
+        <option value="3" data-years="3">3 سنوات</option>
+        <option value="5" data-years="5">5 سنوات</option>
+        <option value="7" data-years="7">7 سنوات</option>
+        <option value="10" selected data-years="10">10 سنوات</option>
+        <option value="15" data-years="15">15 سنة</option>
+        <option value="20" data-years="20">20 سنة</option>
       </select>
       <small data-i18n="behaviorHint">آخر 3 سنوات تحصل على وزن إضافي</small>
     </label>
+  </div>
+
+  <div class="card smart-reduction-card">
+    <div class="smart-head">
+      <div>
+        <h3 data-i18n="smartReductionTitle">التقليل الذكي لعدد الأرقام</h3>
+        <small data-i18n="smartReductionInlineExplain">يحسب عددًا مقترحًا اعتمادًا على الاختبار التاريخي المقفول للفترة المختارة.</small>
+      </div>
+      <label class="switch-label">
+        <input id="smartReductionToggle" type="checkbox"/>
+        <span data-i18n="enableSmartReduction">تشغيل</span>
+      </label>
+    </div>
+
+    <div id="smartReductionInline" class="smart-inline hidden">
+      <div class="smart-grid">
+        <label>
+          <span data-i18n="backtestModel">النموذج</span>
+          <select id="smartModel">
+            <option value="A">A — Baseline</option>
+            <option value="B">B — Gap</option>
+            <option value="C">C — Odd/Even</option>
+            <option value="D">D — Weekday</option>
+            <option value="E">E — Sum</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="minimumCoverage">أقل تغطية مطلوبة</span>
+          <select id="smartCoverage">
+            <option value="0.20">20%</option>
+            <option value="0.25">25%</option>
+            <option value="0.30" selected>30%</option>
+            <option value="0.35">35%</option>
+            <option value="0.40">40%</option>
+            <option value="0.45">45%</option>
+            <option value="0.50">50%</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="smart-result">
+        <div>
+          <span data-i18n="recommendedCount">العدد المقترح</span>
+          <b id="smartRecommended">—</b>
+        </div>
+        <div>
+          <span data-i18n="measuredCoverage">التغطية المقاسة</span>
+          <b id="smartMeasured">—</b>
+        </div>
+        <div>
+          <span data-i18n="numbersRemoved">المستبعد من 1000</span>
+          <b id="smartRemoved">—</b>
+        </div>
+      </div>
+
+      <button id="applySmartReduction" class="primary-action" data-i18n="applyRecommended">استخدم العدد المقترح</button>
+      <div id="smartInlineNote" class="mini-note"></div>
+    </div>
   </div>
 
   <div class="card search-card">
@@ -298,6 +356,6 @@
 
 </main>
 
-<script src="./app.js?v=1.7.0"></script>
+<script src="./app.js?v=1.8.0"></script>
 </body>
 </html>

@@ -49,3 +49,25 @@ select,input{padding:11px;border:1px solid #cad4dc;border-radius:9px;background:
 #backtest .controls{margin:0;box-shadow:none;padding:0;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
 
 .recommended-row{font-weight:700;outline:2px solid currentColor;outline-offset:-2px}
+
+.smart-reduction-card{border:2px solid #c9d9e7}
+.smart-head{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.smart-head h3{margin:0 0 4px}
+.switch-label{display:flex!important;flex-direction:row!important;align-items:center;gap:7px;white-space:nowrap}
+.switch-label input{width:20px;height:20px}
+.smart-inline{margin-top:14px;border-top:1px solid #e0e7ed;padding-top:14px}
+.smart-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.smart-grid label{display:flex;flex-direction:column;gap:5px}
+.smart-result{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.smart-result>div{background:#f3f7fa;padding:11px;border-radius:10px;text-align:center}
+.smart-result span{font-size:12px;color:#667;display:block}.smart-result b{font-size:22px}
+.primary-action{width:100%;border:0;background:var(--blue);color:white;padding:12px;border-radius:9px;font-weight:700}
+.mini-note{margin-top:9px;font-size:12px;color:#667;line-height:1.5}
+nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+nav button{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:600px){
+ .smart-grid{grid-template-columns:1fr}
+ .smart-result{grid-template-columns:1fr 1fr}
+ nav{display:flex;overflow-x:auto;scrollbar-width:thin}
+ nav button{min-width:120px;flex:0 0 auto}
+}

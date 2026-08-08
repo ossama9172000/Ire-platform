@@ -16,7 +16,7 @@ const T={
  confirmTitle:'هل أنت متأكد أنك تريد حفظ نتيجة هذا السحب؟',drawPeriod:'فترة السحب',duplicate:'تنبيه: توجد نتيجة محفوظة بالفعل لنفس التاريخ والفترة.',
  saved:'تم حفظ النتيجة',nextCreated:'تم إنشاء قائمة تجريبية للسحب التالي',top:'Top',miss:'خارج Top 150',
  kept:'بقي',entered:'دخل',exited:'خرج',avgMove:'متوسط الحركة',view:'عرض',base:'القائمة الأساسية',
- midday:'Midday',evening:'Evening',loadError:'تعذر تحميل بيانات التطبيق',behaviorWindow:'نافذة مراقبة السلوك',behaviorHint:'آخر 3 سنوات تحصل على وزن إضافي',behaviorRecords:'سجلات نافذة السلوك',longTerm:'سلوك طويل',recentTrend:'اتجاه حديث',backtest:'اختبار تاريخي',historicalBacktest:'الاختبار التاريخي',backtestExplain:'اختبار مقفول: كل يوم تم تقييمه باستخدام المعلومات المتاحة قبله فقط.',testMonth:'الشهر',backtestModel:'النموذج',testTop:'حد Top للاختبار',testedDraws:'السحوبات المختبرة',hits:'الإصابات',hitRate:'نسبة الإصابة',randomBaseline:'الخط العشوائي',averageRank:'متوسط الترتيب',result:'النتيجة',sourceMonth:'حركة آخر ظهور',sourceMonthTitle:'حركة شهر آخر ظهور',sourceMonthExplain:'يراقب من أي سنة/شهر جاء آخر ظهور سابق للأرقام الفائزة، ومتى تعود نفس المنطقة للظهور.',sourceWeight:'وزن عامل الشهر',avgReturn:'متوسط العودة',medianReturn:'وسيط العودة',recentShare:'حصة أحدث 25%',oldShare:'حصة أقدم 25%',cooldownLogic:'منطق الاستبعاد المؤقت',yearByYear:'2020–2025 سنة بسنة',year:'السنة',smartReduction:'تقليل الأرقام',smartReductionTitle:'التقليل الذكي لعدد الأرقام',smartReductionExplain:'يبحث عن أقل عدد أرقام يعطي أفضل كفاءة تغطية في الاختبار التاريخي المقفول، ويقارنه بالعشوائي.',minimumCoverage:'أقل تغطية مقبولة',recommendedCount:'العدد المقترح',measuredCoverage:'التغطية المقاسة',coverageEfficiency:'كفاءة التغطية',numbersRemoved:'أرقام مستبعدة',applyRecommended:'تطبيق العدد المقترح على التوقعات',cutoffComparison:'مقارنة الحدود'
+ midday:'Midday',evening:'Evening',loadError:'تعذر تحميل بيانات التطبيق',behaviorWindow:'نافذة مراقبة السلوك',behaviorHint:'آخر 3 سنوات تحصل على وزن إضافي',behaviorRecords:'سجلات نافذة السلوك',longTerm:'سلوك طويل',recentTrend:'اتجاه حديث',backtest:'اختبار تاريخي',historicalBacktest:'الاختبار التاريخي',backtestExplain:'اختبار مقفول: كل يوم تم تقييمه باستخدام المعلومات المتاحة قبله فقط.',testMonth:'الشهر',backtestModel:'النموذج',testTop:'حد Top للاختبار',testedDraws:'السحوبات المختبرة',hits:'الإصابات',hitRate:'نسبة الإصابة',randomBaseline:'الخط العشوائي',averageRank:'متوسط الترتيب',result:'النتيجة',sourceMonth:'حركة آخر ظهور',sourceMonthTitle:'حركة شهر آخر ظهور',sourceMonthExplain:'يراقب من أي سنة/شهر جاء آخر ظهور سابق للأرقام الفائزة، ومتى تعود نفس المنطقة للظهور.',sourceWeight:'وزن عامل الشهر',avgReturn:'متوسط العودة',medianReturn:'وسيط العودة',recentShare:'حصة أحدث 25%',oldShare:'حصة أقدم 25%',cooldownLogic:'منطق الاستبعاد المؤقت',yearByYear:'2020–2025 سنة بسنة',year:'السنة',smartReduction:'تقليل الأرقام',smartReductionTitle:'التقليل الذكي لعدد الأرقام',smartReductionExplain:'يبحث عن أقل عدد أرقام يعطي أفضل كفاءة تغطية في الاختبار التاريخي المقفول، ويقارنه بالعشوائي.',minimumCoverage:'أقل تغطية مقبولة',recommendedCount:'العدد المقترح',measuredCoverage:'التغطية المقاسة',coverageEfficiency:'كفاءة التغطية',numbersRemoved:'أرقام مستبعدة',applyRecommended:'تطبيق العدد المقترح على التوقعات',cutoffComparison:'مقارنة الحدود',smartReductionInlineExplain:'يحسب عددًا مقترحًا اعتمادًا على الاختبار التاريخي المقفول للفترة المختارة.',enableSmartReduction:'تشغيل'
  },
  en:{
  subtitle:'Lottery Research Engine',install:'Install',predictions:'Predictions',entry:'Enter Result',history:'History',performance:'Performance',
@@ -31,7 +31,7 @@ const T={
  confirmTitle:'Are you sure you want to save this draw result?',drawPeriod:'Draw period',duplicate:'Warning: A result already exists for the same date and draw.',
  saved:'Result saved',nextCreated:'Experimental next-draw list created',top:'Top',miss:'Outside Top 150',
  kept:'kept',entered:'entered',exited:'exited',avgMove:'average movement',view:'View',base:'Base list',
- midday:'Midday',evening:'Evening',loadError:'Could not load app data',behaviorWindow:'Behavior window',behaviorHint:'The latest 3 years receive extra weight',behaviorRecords:'Behavior-window records',longTerm:'Long-term behavior',recentTrend:'Recent trend',backtest:'Backtest',historicalBacktest:'Historical backtest',backtestExplain:'Locked test: each day was evaluated using only information available before that draw.',testMonth:'Month',backtestModel:'Model',testTop:'Top cutoff',testedDraws:'Tested draws',hits:'Hits',hitRate:'Hit rate',randomBaseline:'Random baseline',averageRank:'Average rank',result:'Result',sourceMonth:'Last-appearance movement',sourceMonthTitle:'Previous-appearance month movement',sourceMonthExplain:'Tracks the year/month of the winning number’s prior appearance and how long the same source region takes to return.',sourceWeight:'Month-factor weight',avgReturn:'Average return',medianReturn:'Median return',recentShare:'Newest 25% share',oldShare:'Oldest 25% share',cooldownLogic:'Temporary cooldown logic',yearByYear:'2020–2025 year by year',year:'Year',smartReduction:'Reduce numbers',smartReductionTitle:'Smart candidate reduction',smartReductionExplain:'Finds the smallest list with the best measured locked-backtest coverage efficiency versus random.',minimumCoverage:'Minimum acceptable coverage',recommendedCount:'Recommended count',measuredCoverage:'Measured coverage',coverageEfficiency:'Coverage efficiency',numbersRemoved:'Numbers removed',applyRecommended:'Apply recommended count to predictions',cutoffComparison:'Cutoff comparison'
+ midday:'Midday',evening:'Evening',loadError:'Could not load app data',behaviorWindow:'Behavior window',behaviorHint:'The latest 3 years receive extra weight',behaviorRecords:'Behavior-window records',longTerm:'Long-term behavior',recentTrend:'Recent trend',backtest:'Backtest',historicalBacktest:'Historical backtest',backtestExplain:'Locked test: each day was evaluated using only information available before that draw.',testMonth:'Month',backtestModel:'Model',testTop:'Top cutoff',testedDraws:'Tested draws',hits:'Hits',hitRate:'Hit rate',randomBaseline:'Random baseline',averageRank:'Average rank',result:'Result',sourceMonth:'Last-appearance movement',sourceMonthTitle:'Previous-appearance month movement',sourceMonthExplain:'Tracks the year/month of the winning number’s prior appearance and how long the same source region takes to return.',sourceWeight:'Month-factor weight',avgReturn:'Average return',medianReturn:'Median return',recentShare:'Newest 25% share',oldShare:'Oldest 25% share',cooldownLogic:'Temporary cooldown logic',yearByYear:'2020–2025 year by year',year:'Year',smartReduction:'Reduce numbers',smartReductionTitle:'Smart candidate reduction',smartReductionExplain:'Finds the smallest list with the best measured locked-backtest coverage efficiency versus random.',minimumCoverage:'Minimum acceptable coverage',recommendedCount:'Recommended count',measuredCoverage:'Measured coverage',coverageEfficiency:'Coverage efficiency',numbersRemoved:'Numbers removed',applyRecommended:'Apply recommended count to predictions',cutoffComparison:'Cutoff comparison',smartReductionInlineExplain:'Calculates a suggested list size from the locked historical backtest for the selected draw.',enableSmartReduction:'Enable'
  }
 };
 let lang=localStorage.getItem(STORAGE.lang)||'ar';
@@ -42,6 +42,7 @@ function applyLang(){
  document.documentElement.dir=lang==='ar'?'rtl':'ltr';
  $('#languageSelect').value=lang;
  document.querySelectorAll('[data-i18n]').forEach(el=>el.textContent=t(el.dataset.i18n));
+ document.querySelectorAll('#behaviorWindow option[data-years]').forEach(opt=>{const y=opt.dataset.years;opt.textContent=lang==='ar'?`${y} سنة`:`${y} years`;});
  renderAll();
 }
 $('#languageSelect').onchange=e=>{lang=e.target.value;localStorage.setItem(STORAGE.lang,lang);applyLang()};
@@ -62,7 +63,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.7.0',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.8.0',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -443,7 +444,38 @@ if(applyReductionBtn)applyReductionBtn.addEventListener('click',()=>{
  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id==='predictions'));
  clearSearch();renderPredictions();
 });
-function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction()}
+
+function renderInlineSmartReduction(){
+ if(!DATA?.backtestArchive || !$('#smartReductionToggle')) return;
+ const enabled=$('#smartReductionToggle').checked;
+ $('#smartReductionInline').classList.toggle('hidden',!enabled);
+ if(!enabled)return;
+ const draw=$('#drawType')?.value||'midday';
+ const model=$('#smartModel')?.value||'A';
+ const minCoverage=Number($('#smartCoverage')?.value||0.30);
+ const {best}=findSweetSpot(draw,model,minCoverage);
+ if(!best)return;
+ $('#smartRecommended').textContent=best.k;
+ $('#smartMeasured').textContent=(best.rate*100).toFixed(1)+'%';
+ $('#smartRemoved').textContent=1000-best.k;
+ $('#applySmartReduction').dataset.k=best.k;
+ $('#smartInlineNote').textContent=lang==='ar'
+   ?`المقارنة: ${best.hits}/${best.n} إصابة في الاختبار المقفول، مقابل ${(best.random*100).toFixed(1)}% كخط عشوائي لنفس العدد.`
+   :`Locked test: ${best.hits}/${best.n} hits, versus ${(best.random*100).toFixed(1)}% random baseline for the same list size.`;
+}
+['smartReductionToggle','smartModel','smartCoverage','drawType'].forEach(id=>{
+ const el=document.getElementById(id);
+ if(el)el.addEventListener(id==='smartReductionToggle'?'change':'change',renderInlineSmartReduction);
+});
+const inlineApply=document.getElementById('applySmartReduction');
+if(inlineApply)inlineApply.addEventListener('click',()=>{
+ const k=Math.max(1,Math.min(1000,Number(inlineApply.dataset.k)||150));
+ $('#tierSize').value=k;
+ localStorage.setItem('lreTierSize',String(k));
+ renderPredictions();
+});
+function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction()}
+
 
 
 
