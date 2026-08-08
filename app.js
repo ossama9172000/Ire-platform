@@ -63,7 +63,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.8.0',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.8.1',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -445,6 +445,53 @@ if(applyReductionBtn)applyReductionBtn.addEventListener('click',()=>{
  clearSearch();renderPredictions();
 });
 
+
+function ensureSmartReductionCard(){
+ if(document.getElementById('smartReductionToggle')) return;
+ const controls=document.querySelector('#predictions .controls');
+ if(!controls) return;
+ const card=document.createElement('div');
+ card.className='card smart-reduction-card';
+ card.innerHTML=`
+  <div class="smart-head">
+   <div><h3 data-i18n="smartReductionTitle">${t('smartReductionTitle')}</h3>
+   <small>${lang==='ar'?'يحسب عددًا مقترحًا اعتمادًا على الاختبار التاريخي المقفول للفترة المختارة.':'Calculates a suggested list size from the locked historical backtest for the selected draw.'}</small></div>
+   <label class="switch-label"><input id="smartReductionToggle" type="checkbox" checked>
+   <span>${lang==='ar'?'تشغيل':'Enable'}</span></label>
+  </div>
+  <div id="smartReductionInline" class="smart-inline">
+   <div class="smart-grid">
+    <label><span>${t('backtestModel')}</span><select id="smartModel">
+     <option value="A">A — Baseline</option><option value="B">B — Gap</option>
+     <option value="C">C — Odd/Even</option><option value="D">D — Weekday</option><option value="E">E — Sum</option>
+    </select></label>
+    <label><span>${t('minimumCoverage')}</span><select id="smartCoverage">
+     <option value="0.20">20%</option><option value="0.25">25%</option><option value="0.30" selected>30%</option>
+     <option value="0.35">35%</option><option value="0.40">40%</option><option value="0.45">45%</option><option value="0.50">50%</option>
+    </select></label>
+   </div>
+   <div class="smart-result">
+    <div><span>${t('recommendedCount')}</span><b id="smartRecommended">—</b></div>
+    <div><span>${t('measuredCoverage')}</span><b id="smartMeasured">—</b></div>
+    <div><span>${t('numbersRemoved')}</span><b id="smartRemoved">—</b></div>
+   </div>
+   <button id="applySmartReduction" class="primary-action">${t('applyRecommended')}</button>
+   <div id="smartInlineNote" class="mini-note"></div>
+  </div>`;
+ controls.insertAdjacentElement('afterend',card);
+ const toggle=document.getElementById('smartReductionToggle');
+ const model=document.getElementById('smartModel');
+ const cov=document.getElementById('smartCoverage');
+ [toggle,model,cov].forEach(el=>el&&el.addEventListener('change',renderInlineSmartReduction));
+ const btn=document.getElementById('applySmartReduction');
+ if(btn)btn.addEventListener('click',()=>{
+   const k=Math.max(1,Math.min(1000,Number(btn.dataset.k)||150));
+   document.getElementById('tierSize').value=k;
+   localStorage.setItem('lreTierSize',String(k));
+   renderPredictions();
+ });
+}
+
 function renderInlineSmartReduction(){
  if(!DATA?.backtestArchive || !$('#smartReductionToggle')) return;
  const enabled=$('#smartReductionToggle').checked;
@@ -474,7 +521,7 @@ if(inlineApply)inlineApply.addEventListener('click',()=>{
  localStorage.setItem('lreTierSize',String(k));
  renderPredictions();
 });
-function renderAll(){if(!DATA)return;renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction()}
+function renderAll(){if(!DATA)return;ensureSmartReductionCard();renderPredictions();renderHistory();renderPerformance();renderBacktest();renderSourceMonth();renderReduction();renderInlineSmartReduction()}
 
 
 
