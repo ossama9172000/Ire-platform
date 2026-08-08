@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#163A5F"/>
   <title>LRE Mobile</title>
   <link rel="manifest" href="./manifest.json"/>
-  <link rel="stylesheet" href="./styles.css?v=1.8.1"/>
+  <link rel="stylesheet" href="./styles.css?v=1.8.2"/>
 </head>
 <body>
 <header>
@@ -124,7 +124,12 @@
       </div>
 
       <button id="applySmartReduction" class="primary-action" data-i18n="applyRecommended">استخدم العدد المقترح</button>
-      <div id="smartInlineNote" class="mini-note"></div>
+      <div id="smartInlineNote" class="mini-note"></div><div class="optimizer-summary">
+<div><span>Uplift vs random</span><b id="smartUplift">—</b></div>
+<div><span>Efficiency</span><b id="smartEfficiency">—</b></div></div>
+<details class="optimizer-details"><summary>Compare list sizes</summary>
+<div class="table-wrap"><table class="bt-table"><thead><tr><th>Top K</th><th>Hits</th><th>Hit rate</th><th>Random</th><th>Uplift</th><th>Efficiency</th></tr></thead>
+<tbody id="smartCompareRows"></tbody></table></div></details>
     </div>
   </div>
 
@@ -356,6 +361,6 @@
 
 </main>
 
-<script src="./app.js?v=1.8.1"></script>
+<script src="./app.js?v=1.8.2"></script>
 </body>
 </html>

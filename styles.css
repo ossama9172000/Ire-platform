@@ -71,3 +71,8 @@ nav button{min-width:0;overflow:hidden;text-overflow:ellipsis}
  nav{display:flex;overflow-x:auto;scrollbar-width:thin}
  nav button{min-width:120px;flex:0 0 auto}
 }
+
+.optimizer-summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.optimizer-summary>div{background:#f3f7fa;padding:10px;border-radius:10px;text-align:center}
+.optimizer-summary span{display:block;font-size:12px;color:#667}.optimizer-summary b{font-size:20px}
+.optimizer-details{margin-top:10px}.optimizer-details summary{cursor:pointer;font-weight:700;padding:8px 0}

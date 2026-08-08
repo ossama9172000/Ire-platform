@@ -63,7 +63,7 @@ function setActive(id){localStorage.setItem(STORAGE.active,id)}
 
 async function loadData(){
  try{
-  const r=await fetch('./data.json?v=1.8.1',{cache:'no-store'});
+  const r=await fetch('./data.json?v=1.8.2',{cache:'no-store'});
   if(!r.ok)throw new Error('HTTP '+r.status);
   DATA=await r.json();
   $('#version').textContent=DATA.version||'LRE';
@@ -397,15 +397,13 @@ function reductionStats(draw,model,k){
  return {n:rows.length,hits,rate,random,eff:random>0?rate/random:0};
 }
 function findSweetSpot(draw,model,minCoverage){
- const cutoffs=DATA?.smartReduction?.candidateCutoffs||[50,100,150,200,250,300,400,500];
- const stats=cutoffs.map(k=>({k,...reductionStats(draw,model,k)}));
- // First prefer cutoffs meeting the requested coverage; among them, maximize
- // efficiency, then prefer fewer numbers. If none qualify, choose the
- // highest observed coverage per number without exceeding 500.
- const eligible=stats.filter(s=>s.rate>=minCoverage);
- const pool=eligible.length?eligible:stats;
- pool.sort((a,b)=>(b.eff-a.eff)||(a.k-b.k));
- return {best:pool[0],stats};
+ const cutoffs=DATA?.smartReductionOptimizer?.candidateCutoffs||DATA?.smartReduction?.candidateCutoffs||[50,75,100,125,150,175,200,225,250,300,350,400];
+ const stats=cutoffs.map(k=>{const s=reductionStats(draw,model,k);return {...s,k,upliftPP:(s.rate-s.random)*100};});
+ const bestUplift=Math.max(...stats.map(s=>s.upliftPP));
+ const tol=Number(DATA?.smartReductionOptimizer?.nearBestTolerancePP??3);
+ const near=stats.filter(s=>s.upliftPP>=bestUplift-tol && s.upliftPP>=0).sort((a,b)=>a.k-b.k||b.upliftPP-a.upliftPP);
+ const best=near.length?near[0]:[...stats].sort((a,b)=>b.upliftPP-a.upliftPP||a.k-b.k)[0];
+ return {best,stats,bestUplift};
 }
 function renderReduction(){
  if(!DATA?.backtestArchive||!$('#redDraw'))return;
@@ -493,22 +491,24 @@ function ensureSmartReductionCard(){
 }
 
 function renderInlineSmartReduction(){
- if(!DATA?.backtestArchive || !$('#smartReductionToggle')) return;
+ if(!DATA?.backtestArchive||!$('#smartReductionToggle'))return;
  const enabled=$('#smartReductionToggle').checked;
  $('#smartReductionInline').classList.toggle('hidden',!enabled);
  if(!enabled)return;
- const draw=$('#drawType')?.value||'midday';
- const model=$('#smartModel')?.value||'A';
- const minCoverage=Number($('#smartCoverage')?.value||0.30);
- const {best}=findSweetSpot(draw,model,minCoverage);
+ const draw=$('#drawType')?.value||'midday', model=$('#smartModel')?.value||'A';
+ const {best,stats,bestUplift}=findSweetSpot(draw,model,Number($('#smartCoverage')?.value||0.30));
  if(!best)return;
  $('#smartRecommended').textContent=best.k;
  $('#smartMeasured').textContent=(best.rate*100).toFixed(1)+'%';
  $('#smartRemoved').textContent=1000-best.k;
+ if($('#smartUplift'))$('#smartUplift').textContent=(best.upliftPP>=0?'+':'')+best.upliftPP.toFixed(1)+' pp';
+ if($('#smartEfficiency'))$('#smartEfficiency').textContent=best.eff.toFixed(2)+'×';
  $('#applySmartReduction').dataset.k=best.k;
+ if($('#smartCompareRows'))$('#smartCompareRows').innerHTML=stats.map(s=>`<tr class="${s.k===best.k?'recommended-row':''}"><td>${s.k}</td><td>${s.hits}/${s.n}</td><td>${(s.rate*100).toFixed(1)}%</td><td>${(s.random*100).toFixed(1)}%</td><td>${s.upliftPP>=0?'+':''}${s.upliftPP.toFixed(1)} pp</td><td>${s.eff.toFixed(2)}×</td></tr>`).join('');
+ const tol=Number(DATA?.smartReductionOptimizer?.nearBestTolerancePP??3);
  $('#smartInlineNote').textContent=lang==='ar'
-   ?`المقارنة: ${best.hits}/${best.n} إصابة في الاختبار المقفول، مقابل ${(best.random*100).toFixed(1)}% كخط عشوائي لنفس العدد.`
-   :`Locked test: ${best.hits}/${best.n} hits, versus ${(best.random*100).toFixed(1)}% random baseline for the same list size.`;
+ ?`أفضل تفوق مقاس = ${bestUplift.toFixed(1)} نقطة مئوية. نختار أصغر قائمة تقع في نطاق ${tol.toFixed(1)} نقاط من الأفضل. الاختيار الحالي: ${best.k} رقم.`
+ :`Best measured uplift = ${bestUplift.toFixed(1)} pp. The optimizer chooses the smallest list within ${tol.toFixed(1)} pp of the best. Current choice: ${best.k} numbers.`;
 }
 ['smartReductionToggle','smartModel','smartCoverage','drawType'].forEach(id=>{
  const el=document.getElementById(id);
